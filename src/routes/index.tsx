@@ -14,6 +14,7 @@ import {
   Globe,
   Star,
 } from "lucide-react";
+import { useI18n } from "../lib/i18n";
 
 import _logoAsset from "../../images/logo.png";
 import _promo1 from "../../images/promo-1.jpeg.jpeg";
@@ -78,6 +79,8 @@ function Landing() {
 
 /* ---------- NAV ---------- */
 function Nav() {
+  const { t, language, setLanguage } = useI18n();
+
   return (
     <motion.header
       initial={{ y: -30, opacity: 0 }}
@@ -92,23 +95,32 @@ function Nav() {
         </span>
       </a>
       <nav className="hidden items-center gap-7 text-sm text-muted-foreground md:flex">
-        <a href="#features" className="transition-colors hover:text-foreground">Features</a>
-        <a href="#showcase" className="transition-colors hover:text-foreground">App</a>
-        <a href="#how" className="transition-colors hover:text-foreground">How it works</a>
+        <a href="#features" className="transition-colors hover:text-foreground">{t("nav.features")}</a>
+        <a href="#showcase" className="transition-colors hover:text-foreground">{t("nav.app")}</a>
+        <a href="#how" className="transition-colors hover:text-foreground">{t("nav.howItWorks")}</a>
       </nav>
-      <a
-        href="#download"
-        className="group inline-flex items-center gap-1.5 rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.03]"
-      >
-        Get the app
-        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-      </a>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={() => setLanguage(language === "ar" ? "en" : "ar")}
+          className="text-xs font-bold uppercase tracking-wider text-muted-foreground hover:text-foreground"
+        >
+          {language === "ar" ? "EN" : "عربي"}
+        </button>
+        <a
+          href="#download"
+          className="group inline-flex items-center gap-1.5 rounded-full bg-gradient-brand px-4 py-2 text-sm font-semibold text-primary-foreground shadow-soft transition-transform hover:scale-[1.03]"
+        >
+          {t("nav.getApp")}
+          <ArrowRight className="h-4 w-4 transition-transform ltr:group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5 rtl:rotate-180" />
+        </a>
+      </div>
     </motion.header>
   );
 }
 
 /* ---------- HERO ---------- */
 function Hero() {
+  const { t } = useI18n();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 120]);
@@ -132,7 +144,7 @@ function Hero() {
             className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/70 px-3 py-1 text-xs font-medium text-muted-foreground backdrop-blur"
           >
             <Sparkles className="h-3.5 w-3.5 text-brand-magenta" />
-            New · v3 dashboard is live
+            {t("hero.badge")}
           </motion.div>
 
           <motion.h1
@@ -142,9 +154,7 @@ function Hero() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="mt-5 font-display text-5xl font-extrabold leading-[1.02] tracking-tight text-ink sm:text-6xl lg:text-7xl"
           >
-            One app for every{" "}
-            <span className="text-gradient-brand">SIM</span>,
-            <br className="hidden sm:block" /> every request.
+            {t("hero.title")}
           </motion.h1>
 
           <motion.p
@@ -154,9 +164,7 @@ function Hero() {
             transition={{ duration: 0.7, delay: 0.2 }}
             className="mt-5 max-w-xl text-lg text-muted-foreground sm:text-xl"
           >
-            SIM Services unifies Maroc Telecom, Orange and inwi inside one beautiful
-            workspace. Recharge balance, register a line, port a number, request a
-            PIN/PUK — all from a single tap.
+            {t("hero.subtitle")}
           </motion.p>
 
           <motion.div
@@ -170,14 +178,14 @@ function Hero() {
               href="#download"
               className="group inline-flex items-center gap-2 rounded-full bg-gradient-brand px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-glow transition-transform hover:scale-[1.03]"
             >
-              Download now
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              {t("hero.download")}
+              <ArrowRight className="h-4 w-4 transition-transform ltr:group-hover:translate-x-1 rtl:group-hover:-translate-x-1 rtl:rotate-180" />
             </a>
             <a
               href="#showcase"
               className="inline-flex items-center gap-2 rounded-full border border-border bg-card/70 px-6 py-3.5 text-sm font-semibold text-foreground backdrop-blur transition-colors hover:bg-card"
             >
-              See it in action
+              {t("hero.seeAction")}
             </a>
           </motion.div>
 
@@ -189,9 +197,9 @@ function Hero() {
             className="mt-10 grid max-w-md grid-cols-3 gap-6"
           >
             {[
-              { k: "120k+", v: "Requests" },
-              { k: "3", v: "Operators" },
-              { k: "4.9★", v: "User rating" },
+              { k: "120k+", v: t("hero.stats.requests") },
+              { k: "3", v: t("hero.stats.operators") },
+              { k: "4.9★", v: t("hero.stats.rating") },
             ].map((s) => (
               <div key={s.v}>
                 <dt className="font-display text-2xl font-bold text-gradient-brand sm:text-3xl">{s.k}</dt>
@@ -207,7 +215,7 @@ function Hero() {
             initial={{ opacity: 0, y: 40, rotate: -4 }}
             animate={{ opacity: 1, y: 0, rotate: -4 }}
             transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute -left-8 top-16 hidden w-44 -rotate-6 sm:block"
+            className="absolute ltr:-left-8 rtl:-right-8 top-16 hidden w-44 ltr:-rotate-6 rtl:rotate-6 sm:block"
           >
             <PhoneFrame src={screenProviders.url} />
           </motion.div>
@@ -225,7 +233,7 @@ function Hero() {
             initial={{ opacity: 0, y: 40, rotate: 4 }}
             animate={{ opacity: 1, y: 0, rotate: 6 }}
             transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute -right-6 top-24 hidden w-44 sm:block"
+            className="absolute ltr:-right-6 rtl:-left-6 top-24 hidden w-44 ltr:rotate-4 rtl:-rotate-4 sm:block"
           >
             <PhoneFrame src={screenServices.url} />
           </motion.div>
@@ -238,7 +246,7 @@ function Hero() {
             className="absolute -bottom-4 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full bg-card px-4 py-2 shadow-soft ring-1 ring-border"
           >
             <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-            <span className="text-xs font-semibold">Request approved · just now</span>
+            <span className="text-xs font-semibold">{t("hero.floatingBadge")}</span>
           </motion.div>
         </motion.div>
       </div>
@@ -290,28 +298,29 @@ function LogoMarquee() {
 }
 
 /* ---------- FEATURES ---------- */
-const features = [
-  { icon: Smartphone, title: "All operators, one inbox", body: "Maroc Telecom, Orange and inwi requests live side by side — no app switching." },
-  { icon: Wallet, title: "Balance you can trust", body: "Add credit, hide your balance and track every dirham spent on requests." },
-  { icon: RefreshCw, title: "Port & restore numbers", body: "Move a line between operators or restore a lost number in a couple of taps." },
-  { icon: Shield, title: "PIN / PUK on demand", body: "Securely request your codes whenever you need them, with full audit history." },
-  { icon: Send, title: "Send a new request", body: "Forfaits, registrations, ADSL/Fiber — a single fluid flow with smart defaults." },
-  { icon: Zap, title: "Built for speed", body: "Optimistic UI, offline drafts and instant status — feels native, scales global." },
-];
-
 function Features() {
+  const { t } = useI18n();
+  const featuresList = [
+    { icon: Smartphone, title: t("features.items.1.title"), body: t("features.items.1.body") },
+    { icon: Wallet, title: t("features.items.2.title"), body: t("features.items.2.body") },
+    { icon: RefreshCw, title: t("features.items.3.title"), body: t("features.items.3.body") },
+    { icon: Shield, title: t("features.items.4.title"), body: t("features.items.4.body") },
+    { icon: Send, title: t("features.items.5.title"), body: t("features.items.5.body") },
+    { icon: Zap, title: t("features.items.6.title"), body: t("features.items.6.body") },
+  ];
+
   return (
     <section id="features" className="relative px-4 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHeader
-          eyebrow="Why SIM Services"
-          title={<>Everything your line needs, <span className="text-gradient-brand">nothing it doesn't.</span></>}
-          sub="Designed for resellers, shops and power users who juggle dozens of SIMs every week."
+          eyebrow={t("features.eyebrow")}
+          title={t("features.title")}
+          sub={t("features.sub")}
         />
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {features.map((f, i) => (
+          {featuresList.map((f, i) => (
             <motion.div
-              key={f.title}
+              key={f.title as string}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, margin: "-80px" }}
@@ -319,7 +328,7 @@ function Features() {
               transition={{ duration: 0.5, delay: i * 0.06 }}
               className="group relative overflow-hidden rounded-3xl border border-border/70 bg-card/80 p-6 backdrop-blur transition-all hover:-translate-y-1 hover:shadow-soft"
             >
-              <div className="absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gradient-brand opacity-0 blur-2xl transition-opacity group-hover:opacity-30" />
+              <div className="absolute ltr:-right-10 rtl:-left-10 -top-10 h-32 w-32 rounded-full bg-gradient-brand opacity-0 blur-2xl transition-opacity group-hover:opacity-30" />
               <div className="relative">
                 <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-brand text-primary-foreground shadow-soft">
                   <f.icon className="h-5 w-5" />
@@ -366,19 +375,20 @@ function SectionHeader({
 
 /* ---------- SHOWCASE (promo images) ---------- */
 function Showcase() {
+  const { t } = useI18n();
   const items = [
-    { src: promo1.url, label: "Service catalog", tone: "from-amber-400 to-orange-500" },
-    { src: promo3.url, label: "Pick a provider", tone: "from-orange-500 to-rose-500" },
-    { src: promo2.url, label: "Maroc Telecom flows", tone: "from-rose-500 to-fuchsia-500" },
-    { src: promo4.url, label: "Always with you", tone: "from-fuchsia-500 to-purple-600" },
+    { src: promo1.url, label: t("showcase.items.1"), tone: "from-amber-400 to-orange-500" },
+    { src: promo3.url, label: t("showcase.items.2"), tone: "from-orange-500 to-rose-500" },
+    { src: promo2.url, label: t("showcase.items.3"), tone: "from-rose-500 to-fuchsia-500" },
+    { src: promo4.url, label: t("showcase.items.4"), tone: "from-fuchsia-500 to-purple-600" },
   ];
   return (
     <section id="showcase" className="relative px-4 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHeader
-          eyebrow="Inside the app"
-          title={<>A workspace that feels <span className="text-gradient-brand">handcrafted.</span></>}
-          sub="Bold colour. Crisp typography. Motion where it matters."
+          eyebrow={t("showcase.eyebrow")}
+          title={t("showcase.title")}
+          sub={t("showcase.sub")}
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -399,9 +409,9 @@ function Showcase() {
                   className="aspect-[3/4] w-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </div>
-              <figcaption className="absolute bottom-3 left-3 right-3 flex items-center justify-between rounded-full bg-background/85 px-3 py-1.5 text-xs font-semibold backdrop-blur">
+              <figcaption className="absolute bottom-3 ltr:left-3 rtl:right-3 ltr:right-3 rtl:left-3 flex items-center justify-between rounded-full bg-background/85 px-3 py-1.5 text-xs font-semibold backdrop-blur">
                 <span>{it.label}</span>
-                <ArrowRight className="h-3.5 w-3.5" />
+                <ArrowRight className="h-3.5 w-3.5 rtl:rotate-180" />
               </figcaption>
             </motion.figure>
           ))}
@@ -413,17 +423,18 @@ function Showcase() {
 
 /* ---------- HOW IT WORKS ---------- */
 function HowItWorks() {
+  const { t } = useI18n();
   const steps = [
-    { n: "01", t: "Pick a provider", d: "Maroc Telecom, Orange or inwi — branded the way you'd expect.", img: screenProviders.url },
-    { n: "02", t: "Choose the service", d: "Forfaits, registration, restore, port-out, PIN/PUK, cancel.", img: screenServices.url },
-    { n: "03", t: "Track every request", d: "Live status, history and balance — all in one home screen.", img: screenHome.url },
+    { n: "01", t: t("how.items.1.title"), d: t("how.items.1.body"), img: screenProviders.url },
+    { n: "02", t: t("how.items.2.title"), d: t("how.items.2.body"), img: screenServices.url },
+    { n: "03", t: t("how.items.3.title"), d: t("how.items.3.body"), img: screenHome.url },
   ];
   return (
     <section id="how" className="relative px-4 py-24 sm:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionHeader
-          eyebrow="How it works"
-          title={<>Three taps from idea <span className="text-gradient-brand">to done.</span></>}
+          eyebrow={t("how.eyebrow")}
+          title={t("how.title")}
         />
         <div className="mt-14 grid gap-8 lg:grid-cols-3">
           {steps.map((s, i) => (
@@ -452,6 +463,7 @@ function HowItWorks() {
 
 /* ---------- TESTIMONIAL ---------- */
 function Testimonial() {
+  const { t } = useI18n();
   return (
     <section className="px-4 py-24 sm:py-32">
       <motion.div
@@ -469,15 +481,13 @@ function Testimonial() {
             ))}
           </div>
           <blockquote className="mt-6 font-display text-2xl font-semibold leading-snug sm:text-3xl">
-            "I used to run three operator portals on three browsers. SIM Services
-            collapsed all of that into a single, gorgeous dashboard — my shop
-            processes <span className="text-gradient-brand">2× more requests a day.</span>"
+            {t("testimonial.quote")}
           </blockquote>
           <div className="mt-6 flex items-center justify-center gap-3">
             <div className="h-10 w-10 rounded-full bg-gradient-brand" />
-            <div className="text-left">
-              <div className="text-sm font-bold">Yassine B.</div>
-              <div className="text-xs text-muted-foreground">SIM reseller · Casablanca</div>
+            <div className="ltr:text-left rtl:text-right">
+              <div className="text-sm font-bold">{t("testimonial.author")}</div>
+              <div className="text-xs text-muted-foreground">{t("testimonial.role")}</div>
             </div>
           </div>
         </div>
@@ -488,6 +498,7 @@ function Testimonial() {
 
 /* ---------- CTA ---------- */
 function CTA() {
+  const { t } = useI18n();
   return (
     <section id="download" className="px-4 py-24 sm:py-32">
       <motion.div
@@ -498,30 +509,29 @@ function CTA() {
         className="relative mx-auto max-w-5xl overflow-hidden rounded-[2.2rem] bg-gradient-brand p-10 text-primary-foreground shadow-glow sm:p-16"
       >
         <div className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay">
-          <div className="absolute -left-10 -top-10 h-72 w-72 rounded-full bg-white blur-3xl" />
-          <div className="absolute -bottom-10 right-0 h-80 w-80 rounded-full bg-black blur-3xl" />
+          <div className="absolute ltr:-left-10 rtl:-right-10 -top-10 h-72 w-72 rounded-full bg-white blur-3xl" />
+          <div className="absolute -bottom-10 ltr:right-0 rtl:left-0 h-80 w-80 rounded-full bg-black blur-3xl" />
         </div>
         <div className="relative grid items-center gap-10 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <h2 className="font-display text-4xl font-extrabold leading-tight sm:text-5xl">
-              Your SIM workflow,<br /> finally beautiful.
+              {t("cta.title")}
             </h2>
             <p className="mt-4 max-w-lg text-base opacity-90 sm:text-lg">
-              Install SIM Services today. Free for the first 30 requests — no card,
-              no setup, no friction.
+              {t("cta.sub")}
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <a
                 href="#"
                 className="inline-flex items-center gap-2 rounded-full bg-background px-6 py-3.5 text-sm font-bold text-foreground shadow-soft transition-transform hover:scale-[1.03]"
               >
-                <Smartphone className="h-4 w-4" /> Download for Android
+                <Smartphone className="h-4 w-4" /> {t("cta.btn.android")}
               </a>
               <a
                 href="#"
                 className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/10 px-6 py-3.5 text-sm font-semibold backdrop-blur transition-colors hover:bg-white/20"
               >
-                <Globe className="h-4 w-4" /> Open web app
+                <Globe className="h-4 w-4" /> {t("cta.btn.web")}
               </a>
             </div>
           </div>
@@ -542,6 +552,7 @@ function CTA() {
 
 /* ---------- FOOTER ---------- */
 function Footer() {
+  const { t } = useI18n();
   return (
     <footer className="border-t border-border/60 px-4 py-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
@@ -552,7 +563,7 @@ function Footer() {
           </span>
         </div>
         <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} SIM Services · Made with care in Morocco
+          © {new Date().getFullYear()} {t("footer.copy")}
         </p>
       </div>
     </footer>
