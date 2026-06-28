@@ -257,9 +257,8 @@ function Hero() {
 function PhoneFrame({ src, highlight = false }: { src: string; highlight?: boolean }) {
   return (
     <div
-      className={`relative overflow-hidden rounded-[2.2rem] border border-border/80 bg-card p-1.5 ${
-        highlight ? "shadow-phone" : "shadow-soft"
-      }`}
+      className={`relative overflow-hidden rounded-[2.2rem] border border-border/80 bg-card p-1.5 ${highlight ? "shadow-phone" : "shadow-soft"
+        }`}
     >
       <div className="overflow-hidden rounded-[1.8rem]">
         <img src={src} alt="App screen" className="block h-auto w-full" loading="lazy" />
